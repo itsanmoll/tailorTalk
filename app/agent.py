@@ -2,7 +2,7 @@ import os
 from dotenv import load_dotenv
 from langchain.agents import Tool, initialize_agent , AgentType
 from langchain_google_genai import ChatGoogleGenerativeAI
-from app.calendarUtils import check_availability, book_event
+from app.calendarUtils import check_availability, book_event, book_event_from_text
 
 load_dotenv()
 
@@ -19,8 +19,8 @@ tools = [
     ),
     Tool(
         name="BookEvent",
-        func=book_event,
-        description="Book an event on Google Calendar"
+        func=book_event_from_text,
+        description="Only use this tool when the user provides complete event details: event name, start time, and duration."
     )
 ]
 

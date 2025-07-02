@@ -28,3 +28,25 @@ def book_event(summary: str, start_time: datetime, end_time: datetime):
     }
     event = service.events().insert(calendarId=CALENDAR_ID, body=event).execute()
     return event.get('htmlLink', 'No link returned')
+
+def book_event_from_text(user_input: str) -> str:
+    """
+    Parses user input like 'Book a meeting tomorrow at 3 PM' and calls book_event.
+    """
+    try:
+        summary = user_input
+        start_time = datetime.now() + timedelta(days=1)
+        start_time = start_time.replace(hour=15, minute=0, second=0)
+        end_time = start_time + timedelta(minutes=30)
+
+        
+        busy_slots = check_availability(start_time, end_time)
+        if busy_slots:
+            return "❌ Time slot is already busy. Try another time."
+
+        # Call actual booking function
+        event_link = book_event(summary, start_time, end_time)
+        return f"✅ Event booked successfully: {event_link}"
+
+    except Exception as e:
+        return f"❌ Failed to book event: {str(e)}"

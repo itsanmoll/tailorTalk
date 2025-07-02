@@ -28,6 +28,7 @@ user_input = st.chat_input("Ask me something like: 'Book a meeting tomorrow at 3
 
 # Handle user message
 if user_input:
+    chat_history = [(msg["role"], msg["content"]) for msg in st.session_state.messages]
     st.session_state.messages.append({"role": "user", "content": user_input})
 
     # Show typing spinner
@@ -35,11 +36,16 @@ if user_input:
         try:
             response = requests.post(
                 BACKEND_URL,
-                json={"user_input": user_input},
+                json={
+                    "user_input": user_input,
+                    "chat_history": chat_history
+                    },
                 timeout=30
-            )
+                )
             if response.status_code == 200:
-                agent_reply = response.json()["response"]
+                # agent_reply = response.json()["response"]
+                response_json = response.json()
+                agent_reply = response_json.get("response", response_json.get("error", "⚠️ No response received."))
             else:
                 agent_reply = f"⚠️ Error {response.status_code} from backend"
         except Exception as e:
