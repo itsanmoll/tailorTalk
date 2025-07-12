@@ -24,7 +24,7 @@ if "messages" not in st.session_state:
     st.session_state.messages = []
 
 # Chat input field
-user_input = st.chat_input("Ask me something like: 'Book a meeting tomorrow at 3 PM'")
+user_input = st.chat_input("Try: Book a meeting titled 'Demo with client' on 2025-07-04 at 14:00 for 45 minutes")
 
 # Handle user message
 if user_input:
