@@ -97,13 +97,14 @@ def send_message(user_input, chat_history):
             },
             timeout=30
         )
-        
         if response.status_code == 200:
             response_json = response.json()
+            # If meeting booked, add emoji and success message
+            if response_json.get("response", "").lower().startswith("meeting booked"):
+                return f"✅ Meeting booked successfully!\n\n{response_json['response']}", True
             return response_json.get("response", "⚠️ No response received."), True
         else:
             return f"⚠️ Backend error: {response.status_code}", False
-            
     except requests.exceptions.Timeout:
         return "⏰ Request timed out. Please try again.", False
     except requests.exceptions.ConnectionError:

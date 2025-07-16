@@ -1,5 +1,3 @@
-
-
 # FastAPI backend for meeting booking bot
 from typing import List, Tuple, Optional, Dict, Any
 from fastapi import FastAPI, HTTPException, status
